@@ -8,11 +8,11 @@ Created on Sun Dec  8 13:21:05 2019
 import pandas
 import matplotlib.pyplot as plt
 
-def avg_data_csv():
+def avg_data_csv(year):
     temp=0
     average=[]
     lisdata
-    for row in pd.read_csv('D:/python/air_quality_index/day2/AQI/aqi2013.csv',chunksize=24):
+    for row in pd.read_csv('data/AQI/aqi{}.csv'.format(year),chunksize=24):
         add_var=0
         avg=0.0
         data=[]
@@ -32,7 +32,7 @@ def avg_data_csv():
         return average
 if __name__=='___main__':
     lstdata=[]
-    for i in range():
-        lstdata[i]=avg_data_csv()
-        plt.plot(range(0,360),lst2013,label='2013 data')
+    for year in range(2013,2018):
+        lstdata[i]=avg_data_csv(year)
+        plt.plot(range(0,360),lst2013,label='{} data'.format(year))
         plt.show

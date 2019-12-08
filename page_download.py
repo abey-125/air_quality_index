@@ -19,9 +19,9 @@ def retrive_hmtl():
             texts=requests.get(url)
             text_utf=texts.text.encode('utf=8')
             
-            if not os.path.exists('D:/python/air_quality_index/day1/data/html_data/{}'.format(year)):
-                os.makedirs('D:/python/air_quality_index/day1/data/html_data/{}'.format(year))
-            with open('D:/python/air_quality_index/day1/data/html_data/{}/{}.html'.format(year,month),"wb") as output:
+            if not os.path.exists('/data/html_data/{}'.format(year)):
+                os.makedirs('/data/html_data/{}'.format(year))
+            with open('/data/html_data/{}/{}.html'.format(year,month),"wb") as output:
                 output.write(text_utf)
                 
             sys.stdout.flush()
