@@ -26,19 +26,15 @@ def avg_data_csv(year):
                     temp=float(i)
                     add_var=add_var+temp
         avg=add_var/24
-        #temp_i=temp_i+1
         average.append(avg)
     return average
 if __name__=="__main__":
 
-    print("started")
     lstdata=[]
     i=0
-    #plt.plot(range(0,365),lst2013,label="2013 data")
     for year in range(2013,2019):
         lst_data=avg_data_csv(year)
         lstdata.append(lst_data)
-        #plt.plot(range(0,365),lstdata[i],label='{}data '.format(year))
         if(year==2014) or year==2018:
             plt.plot(range(0,364),lstdata[i],label='{}data '.format(year))
         else:
