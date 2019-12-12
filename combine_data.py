@@ -4,14 +4,15 @@ Created on Mon Dec  9 22:39:51 2019
 
 @author: abeya
 """
-from data_from _csv import avg_data_csv()
+from data_from_csv import avg_data_csv
 import requests
 import sys
+from bs4 import BeautifulSoup
 import pandas as pd 
 import os
 import csv
 
-def met_data(month,year):
+def meta_data(month,year):
     file_html=open('data/html_data/{}/{}.html'.format(year,month),'wb')
     plain_text=file_html.read()
     
@@ -51,18 +52,19 @@ def met_data(month,year):
     return finalD
 
 def data_combine(year,cs):
-    for a in pd.read_csv('data/real_data/real'+str(year)+'.csv',chunksize=cs):
+    for a in pd.read_csv('data/real_data/real_'+str(year)+'.csv',chunksize=cs):
         df= pd.DataFrame(data=a)
         mylist=df.values.tolist()
     return mylist
 
 if __name__=='__main__':
     
-    if os.path.exists("data/real_data"):
-        os.makedirs("data/real_data")
+    if os.path.exists('data/real_data'):
+        os.makedirs('data/real_data')
     for year in range(2013,2019):
         final_data=[]
-        with open('data/real_data/real'+str(year)+'.csv','w') as csvfile:
+        
+        with open('data/real_data/real_'+ str(year) + '.csv', 'w') as csvfile:
             wr=csv.writer(csvfile,dialect='excel')
             wr.writerow(['T', 'TM', 'Tm', 'SLP', 'H', 'VV', 'V', 'VM', 'PM 2.5'])
         for month in range(0,13):
@@ -77,7 +79,7 @@ if __name__=='__main__':
             final_data[i].insert(8,pm[i])
             
         
-        with open('data/real_data/real_'+str(year)+'.csv','w') as csvfile:
+        with open('data/real_data/real_'+str(year)+'.csv','a') as csvfile:
             wr=csv.writer(csvfile,dialect='excel')
             for row in final_data:
                 flag=0
@@ -94,7 +96,7 @@ if __name__=='__main__':
     data_2018= data_combine(2018,600)
     
     total=data_2013+data_2014+data_2015+data_2016+data_2017+data_2018
-     with open('data/real_data/real_combine.csv','w') as csvfile:
+    with open('data/real_data/real_combine.csv','w') as csvfile:
          wr=csv.writer(csvfile,dialect='excel')
          wr.writerow([['T', 'TM', 'Tm', 'SLP', 'H', 'VV', 'V', 'VM', 'PM 2.5']])
          wr.writerows(total)
