@@ -13,14 +13,14 @@ import os
 import csv
 
 def meta_data(month,year):
-    file_html=open('data/html_data/{}/{}.html'.format(year,month),'wb')
+    file_html=open('data/html_data/{}/{}.html'.format(year,month),'rb')
     plain_text=file_html.read()
     
     tempD=[]
     finalD=[]
     
     soup= BeautifulSoup(plain_text,'lxml')
-    for table in soup.finadAll('table',{'class': 'medias mensuales numspan'}):
+    for table in soup.findAll('table',{'class': 'medias mensuales numspan'}):
         for tbody in table:
             for tr in tbody:
                 a=tr.get_text()
@@ -59,7 +59,7 @@ def data_combine(year,cs):
 
 if __name__=='__main__':
     
-    if os.path.exists('data/real_data'):
+    if not os.path.exists('data/real_data'):
         os.makedirs('data/real_data')
     for year in range(2013,2019):
         final_data=[]
@@ -67,15 +67,14 @@ if __name__=='__main__':
         with open('data/real_data/real_'+ str(year) + '.csv', 'w') as csvfile:
             wr=csv.writer(csvfile,dialect='excel')
             wr.writerow(['T', 'TM', 'Tm', 'SLP', 'H', 'VV', 'V', 'VM', 'PM 2.5'])
-        for month in range(0,13):
+        for month in range(1 ,13):
             temp=meta_data(month,year)
             final_data=final_data+temp
-            
+                
         pm=avg_data_csv(year)
-        
         if len(pm)==364:
             pm.insert(364,'-')
-        for i in range(len(final_data)):
+        for i in range(len(final_data)-1):
             final_data[i].insert(8,pm[i])
             
         
@@ -83,7 +82,7 @@ if __name__=='__main__':
             wr=csv.writer(csvfile,dialect='excel')
             for row in final_data:
                 flag=0
-                if elem in row:
+                for elem in row:
                     if(elem=="" or elem==''):
                         flag=1
                 if(flag!=1):
@@ -98,8 +97,10 @@ if __name__=='__main__':
     total=data_2013+data_2014+data_2015+data_2016+data_2017+data_2018
     with open('data/real_data/real_combine.csv','w') as csvfile:
          wr=csv.writer(csvfile,dialect='excel')
-         wr.writerow([['T', 'TM', 'Tm', 'SLP', 'H', 'VV', 'V', 'VM', 'PM 2.5']])
+         wr.writerow(['T', 'TM', 'Tm', 'SLP', 'H', 'VV', 'V', 'VM', 'PM 2.5'])
          wr.writerows(total)
+
+
     
                     
             
